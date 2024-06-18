@@ -12,8 +12,8 @@ move_dict = {
     pg.K_LEFT: (-5, 0),
     pg.K_RIGHT: (5, 0),
     }
-
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     """
@@ -27,7 +27,6 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     if rct.top < 0 or HEIGHT < rct.bottom:
         tate = False
     return yoko, tate
-
 
 
 def main():
@@ -52,10 +51,10 @@ def main():
                 return
             
         if kk_rct.colliderect(bb_rct):
-            screen.blit(bg_img, [0, 0]) #画面の初期化
+            screen.blit(bg_img, [0, 0]) #画面の初期化(背景は残る)
 
             back_rect = pg.Surface((WIDTH, HEIGHT))
-            pg.draw.rect(back_rect, (0, 0, 0), pg.Rect(0, 0, WIDTH, HEIGHT))
+            pg.draw.rect(back_rect, (0, 0, 0), pg.Rect(0, 0, WIDTH, HEIGHT)) #対応するsurface , 色, 表示幅(初期値x, 初期値y, 幅)
             back_rect.set_alpha(50) #透明度の変更
             screen.blit(back_rect, [0, 0])
             pg.display.update()
@@ -64,7 +63,6 @@ def main():
             txt_go = fonto.render("GameOver", True, (255, 0, 0))
             rct =txt_go.get_rect()
             rct.center = WIDTH/2,HEIGHT/2
-            
             screen.blit(txt_go, rct)
             pg.display.update()
 
@@ -72,9 +70,12 @@ def main():
             screen.blit(crykk_img, [300, HEIGHT/2-40])
             screen.blit(crykk_img, [900, HEIGHT/2-40])
             pg.display.update()
-
             
-            
+            """
+            こうかとんを二つ表示する
+            サイズを大きくする
+            位置表示
+            """
             time.sleep(5)
             return 
             
@@ -102,8 +103,6 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
-
-        
 
 
 if __name__ == "__main__":
