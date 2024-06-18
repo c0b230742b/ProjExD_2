@@ -1,5 +1,6 @@
 import os
 import sys
+import random
 import pygame as pg
 
 
@@ -13,6 +14,7 @@ move_dict = {
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -20,6 +22,14 @@ def main():
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
+    bb_img = pg.Surface((20, 20))
+    bb_img.set_colorkey((0, 0, 0))
+    pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)
+    bb_rct = bb_img.get_rect()
+    bb_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
+    vx, vy = +5, +5
+    
+    
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -31,14 +41,18 @@ def main():
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
         for k, v in move_dict.items():
-            if key_lst[k]: #pg.k_left, pg.k\rightなどのぶぶん
+            if key_lst[k]: #pg.k_left, pg.k_rightなどのぶぶん
                 sum_mv[0] +=v[0]
                 sum_mv[1] += v[1] 
         kk_rct.move_ip(sum_mv)
         screen.blit(kk_img, kk_rct)
+        bb_rct.move_ip(vx, vy)
+        screen.blit(bb_img, bb_rct)
         pg.display.update()
         tmr += 1
         clock.tick(50)
+
+        
 
 
 if __name__ == "__main__":
