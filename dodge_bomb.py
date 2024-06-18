@@ -1,16 +1,18 @@
 import os
 import sys
+import time
 import random
 import pygame as pg
 
 
-WIDTH, HEIGHT = 1600, 900
+WIDTH, HEIGHT = 1200, 750
 move_dict = {
     pg.K_UP: (0, -5),
     pg.K_DOWN: (0, +5),
     pg.K_LEFT: (-5, 0),
     pg.K_RIGHT: (5, 0),
     }
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
@@ -35,6 +37,7 @@ def main():
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
+    
     bb_img = pg.Surface((20, 20))
     bb_img.set_colorkey((0, 0, 0))
     pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)
@@ -47,8 +50,34 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
         if kk_rct.colliderect(bb_rct):
-            return
+            screen.blit(bg_img, [0, 0]) #画面の初期化
+
+            back_rect = pg.Surface((WIDTH, HEIGHT))
+            pg.draw.rect(back_rect, (0, 0, 0), pg.Rect(0, 0, WIDTH, HEIGHT))
+            back_rect.set_alpha(50) #透明度の変更
+            screen.blit(back_rect, [0, 0])
+            pg.display.update()
+           
+            fonto = pg.font.Font(None, 80)
+            txt_go = fonto.render("GameOver", True, (255, 0, 0))
+            rct =txt_go.get_rect()
+            rct.center = WIDTH/2,HEIGHT/2
+            
+            screen.blit(txt_go, rct)
+            pg.display.update()
+
+            crykk_img = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0) 
+            screen.blit(crykk_img, [300, HEIGHT/2-40])
+            screen.blit(crykk_img, [900, HEIGHT/2-40])
+            pg.display.update()
+
+            
+            
+            time.sleep(5)
+            return 
+            
         screen.blit(bg_img, [0, 0]) 
 
         key_lst = pg.key.get_pressed()
